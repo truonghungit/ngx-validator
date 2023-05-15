@@ -69,14 +69,11 @@ export function mapReplace(
   exportAs: 'formControlValidator',
 })
 export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
-  @Input('skipValidate')
-  _skipValidate = false;
+  @Input('skipValidate') _skipValidate = false;
 
-  @Input()
-  errorMessage: ErrorMessage | null = null;
+  @Input() errorMessage: ErrorMessage | null = null;
 
-  @Input()
-  validationMessageTemplateRef: TemplateRef<any> | null = null;
+  @Input() validationMessageTemplateRef: TemplateRef<any> | null = null;
 
   get parent(): Partial<FormGroupValidatorDirective> {
     return this.parentFormGroupValidatorDirective;
@@ -102,6 +99,7 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     | ComponentRef<BaseValidationMessagesComponent>
     | EmbeddedViewRef<any>
     | null = null;
+
   private _events$ = new Subject<FormEvent>();
 
   constructor(
