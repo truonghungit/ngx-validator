@@ -96,9 +96,9 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
 
   private _subscriptions = new Subscription();
   private _errorRef:
-    | ComponentRef<BaseValidationMessagesComponent>
-    | EmbeddedViewRef<any>
-    | null = null;
+  | ComponentRef<BaseValidationMessagesComponent>
+  | EmbeddedViewRef<any>
+  | null = null;
 
   private _events$ = new Subject<FormEvent>();
 
