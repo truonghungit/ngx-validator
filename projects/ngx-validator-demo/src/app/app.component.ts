@@ -1,17 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { NgxValidators } from 'projects/ngx-validator/src/public-api';
-
-const myValidator = (control: AbstractControl): ValidationErrors | null => {
-  if (control.value) {
-    return control.value === 'admin' ? {
-      notAllowAdmin: {
-        message: 'khong dc nha'
-      }
-    } : null;
-  }
-  return null;
-}
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 const matchPassword = (password: string, confirmPassword: string) => {
   return (formGroup: FormGroup) => {
@@ -22,22 +10,27 @@ const matchPassword = (password: string, confirmPassword: string) => {
       return;
     }
 
-    if (confirmPasswordControl.errors && !confirmPasswordControl.errors['passwordMismatch']) {
+    if (
+      confirmPasswordControl.errors &&
+      !confirmPasswordControl.errors['passwordMismatch']
+    ) {
       return;
     }
 
     if (passwordControl.value !== confirmPasswordControl.value) {
-      confirmPasswordControl.setErrors({ passwordMismatch: {message: 'not match'} });
+      confirmPasswordControl.setErrors({
+        passwordMismatch: { message: 'not match' },
+      });
     } else {
       confirmPasswordControl.setErrors(null);
     }
-  }
-}
+  };
+};
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   loginForm = this.formBuilder.group({
@@ -45,22 +38,26 @@ export class AppComponent {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  registerForm = this.formBuilder.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    address: this.formBuilder.group({
-      street: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-    }),
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]],
-  });
+  registerForm = this.formBuilder.group(
+    {
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      address: this.formBuilder.group({
+        street: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+      }),
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+    },
+    {
+      validators: [matchPassword],
+    }
+  );
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {}
 
   onSubmit(): void {
-    console.log(this.loginForm)
+    console.log(this.loginForm);
   }
-
 }

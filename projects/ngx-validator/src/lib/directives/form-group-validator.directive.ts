@@ -28,18 +28,20 @@ export class FormGroupValidatorDirective implements AfterViewInit, OnDestroy {
 
   get skipValidate(): boolean {
     return (
-      this.config.skipValidate ||
-      this._skipValidate ||
+      this.config.skipValidate ??
+      this._skipValidate ??
       Boolean(this.parent?.skipValidate)
     );
   }
 
   get formGroup(): FormGroup {
-    return this.formGroupDirective ? this.formGroupDirective.form : this.formGroupName.control;
+    return this.formGroupDirective
+      ? this.formGroupDirective.form
+      : this.formGroupName.control;
   }
 
   get events$(): Observable<FormEvent> {
-    return merge(this._events$ || NEVER, this.parent?.events$ || NEVER);
+    return merge(this._events$ ?? NEVER, this.parent?.events$ ?? NEVER);
   }
 
   private _events$ = new Subject<FormEvent>();
@@ -62,14 +64,13 @@ export class FormGroupValidatorDirective implements AfterViewInit, OnDestroy {
     @SkipSelf()
     @Optional()
     private readonly parentFormGroupValidatorDirective: FormGroupValidatorDirective
-  ) {
-  }
+  ) {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.listenFormEvents();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._subscriptions.unsubscribe();
   }
 
@@ -82,19 +83,34 @@ export class FormGroupValidatorDirective implements AfterViewInit, OnDestroy {
     if (this.formGroup.invalid) {
       event.preventDefault();
     }
-    this._events$.next({ type: FormEventType.FormSubmit, value: this.formGroup });
+    this._events$.next({
+      type: FormEventType.FormSubmit,
+      value: this.formGroup,
+    });
   }
 
   private listenFormEvents(): void {
+    this._events$.next({
+      type: FormEventType.FormInitial,
+      value: this.formGroup,
+    });
 
-    this._events$.next({ type: FormEventType.FormInitial, value: this.formGroup });
+    this._subscriptions.add(
+      this.formGroup.statusChanges.subscribe(() => {
+        this._events$.next({
+          type: FormEventType.StatusChange,
+          value: this.formGroup,
+        });
+      })
+    );
 
-    this._subscriptions.add(this.formGroup.statusChanges.subscribe(() => {
-      this._events$.next({ type: FormEventType.StatusChange, value: this.formGroup });
-    }));
-
-    this._subscriptions.add(this.formGroup.valueChanges.subscribe(() => {
-      this._events$.next({ type: FormEventType.ValueChange, value: this.formGroup });
-    }));
+    this._subscriptions.add(
+      this.formGroup.valueChanges.subscribe(() => {
+        this._events$.next({
+          type: FormEventType.ValueChange,
+          value: this.formGroup,
+        });
+      })
+    );
   }
 }

@@ -4,9 +4,20 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "commit": "git-cz",
+    "build": "npm run build:library && npm run build:demo",
+    "build:library": "ng build --project=ngx-validator && npm run copy-readme",
+    "build:demo": "ng build --project=ngx-validator-demo",
+    "copy-readme": "copyfiles README.md dist/ngx-validator",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "eslint projects/**/*.ts",
+    "lint:fix": "eslint projects/**/*.ts --fix",
+    "lint-staged": "lint-staged --allow-empty",
+    "format:test": "prettier --list-different 'projects/**/*.{ts,html}'",
+    "format:write": "prettier --write 'projects/**/*.{ts,html}'",
+    "commitlint": "commitlint --edit",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -26,14 +37,53 @@
     "@angular-devkit/build-angular": "^15.2.7",
     "@angular/cli": "~15.2.5",
     "@angular/compiler-cli": "^15.2.0",
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "@commitlint/cz-commitlint": "^17.5.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^6.0.3",
     "@types/jasmine": "~4.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
+    "@typescript-eslint/parser": "^5.59.5",
+    "commitizen": "^4.3.0",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.40.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "husky": "^8.0.3",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "lint-staged": "^13.2.2",
     "ng-packagr": "^15.2.2",
+    "prettier": "^2.8.8",
+    "replace-json-property": "^1.8.0",
+    "semantic-release": "^21.0.2",
     "typescript": "~4.9.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "body-max-line-length": [
+        1,
+        "always",
+        100
+      ]
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js,html,css,scss,less,md,json}": "prettier --write"
   }
 }

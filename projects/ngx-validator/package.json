@@ -16,6 +16,7 @@
     "angular reactive form validation"
   ],
   "author": "truonghungit@gmail.com",
+  "homepage": "https://github.com/truonghungit/ngx-validator#readme",
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0"

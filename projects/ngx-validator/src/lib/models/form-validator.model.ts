@@ -1,13 +1,13 @@
-import { Type } from "@angular/core";
-import { ErrorMessage } from "./error-message";
-import { BaseValidationMessagesComponent as BaseValidationMessagesComponent } from "../components";
+import { Type } from '@angular/core';
+import { ErrorMessage } from './error-message';
+import { BaseValidationMessagesComponent } from '../components';
 
 export enum FormEventType {
   FormInitial = 'FORM_INITIAL',
   ValueChange = 'VALUE_CHANGES',
   StatusChange = 'STATUS_CHANGES',
   FormSubmit = 'FORM_SUBMIT',
-  Blur = 'BLUR'
+  Blur = 'BLUR',
 }
 
 export interface FormEvent {
@@ -20,5 +20,9 @@ export interface FormValidatorConfig {
   defaultErrorMessage?: ErrorMessage;
   unknownErrorMessage?: string;
   validationMessagesComponent?: Type<BaseValidationMessagesComponent>;
-  validateOn?: (status: { dirty: boolean; touched: boolean; submited: boolean }) => boolean;
+  validateOn?: (status: {
+    dirty: boolean;
+    touched: boolean;
+    submited: boolean;
+  }) => boolean;
 }

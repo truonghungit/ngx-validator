@@ -1,12 +1,42 @@
-import { AfterViewInit, ApplicationRef, ChangeDetectorRef, ComponentRef, Directive, ElementRef, EmbeddedViewRef, HostListener, Inject, Injector, Input, OnDestroy, Optional, Renderer2, SkipSelf, TemplateRef, Type, ViewContainerRef } from '@angular/core';
-import { FormGroupDirective, NgControl, ValidationErrors } from '@angular/forms';
+import {
+  AfterViewInit,
+  ApplicationRef,
+  ChangeDetectorRef,
+  ComponentRef,
+  Directive,
+  ElementRef,
+  EmbeddedViewRef,
+  HostListener,
+  Inject,
+  Input,
+  OnDestroy,
+  Optional,
+  SkipSelf,
+  TemplateRef,
+  Type,
+  ViewContainerRef,
+} from '@angular/core';
+import {
+  FormGroupDirective,
+  NgControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { map, merge, Subject, Subscription } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
 
 import { FormGroupValidatorDirective } from './form-group-validator.directive';
 import { FORM_VALIDATOR_CONFIGURATION } from '../form-validator-token';
-import { ErrorMessage, FormEvent, FormEventType, FormValidatorConfig, FormatedError } from '../models';
-import { BaseValidationMessagesComponent, DefaultValidationMessagesComponent } from '../components';
+import {
+  ErrorMessage,
+  FormEvent,
+  FormEventType,
+  FormValidatorConfig,
+  FormatedError,
+} from '../models';
+import {
+  BaseValidationMessagesComponent,
+  DefaultValidationMessagesComponent,
+} from '../components';
 import { ValidatorContainerDirective } from './validator-container.directive';
 import { ValidatorTargetDirective } from './validator-target.directive';
 
@@ -27,9 +57,9 @@ export function mapReplace(
   }
 
   const expression = Object.keys(error).join('|');
-  const mapRegExp = new RegExp(interpolate(expression), 'g',);
+  const mapRegExp = new RegExp(interpolate(expression), 'g');
 
-  return defaultMessage.replace(mapRegExp, match => {
+  return defaultMessage.replace(mapRegExp, (match) => {
     return String(error[match.replace(/\{\{\s*|\s*\}\}/g, '')]);
   });
 }
@@ -39,7 +69,6 @@ export function mapReplace(
   exportAs: 'formControlValidator',
 })
 export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
-
   @Input('skipValidate')
   _skipValidate = false;
 
@@ -62,12 +91,18 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
   }
 
   get validationMessageComponent(): Type<BaseValidationMessagesComponent> {
-    return this.config.validationMessagesComponent || DefaultValidationMessagesComponent;
+    return (
+      this.config.validationMessagesComponent ??
+      DefaultValidationMessagesComponent
+    );
   }
 
   private _subscriptions = new Subscription();
-  private _errorRef: ComponentRef<BaseValidationMessagesComponent> | EmbeddedViewRef<any> | null = null;
-  private _events$ = new Subject<FormEvent>()
+  private _errorRef:
+    | ComponentRef<BaseValidationMessagesComponent>
+    | EmbeddedViewRef<any>
+    | null = null;
+  private _events$ = new Subject<FormEvent>();
 
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -90,16 +125,14 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     private readonly config: FormValidatorConfig,
 
     @Optional()
-    public readonly parentFormGroupValidatorDirective: FormGroupValidatorDirective,
-  ) {
-  }
+    public readonly parentFormGroupValidatorDirective: FormGroupValidatorDirective
+  ) {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.listenFormEvents();
   }
 
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._subscriptions.unsubscribe();
   }
 
@@ -109,55 +142,60 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
   }
 
   private listenFormEvents(): void {
-    if (!this.parent || !this.parent.events$) {
+    if (!this.parent ?? !this.parent.events$) {
       return;
     }
 
     let _cachedErrors = '';
 
-    const sub = merge(this.parent.events$, this._events$).pipe(
-      skipWhile(() => this.skipValidate),
-      map(() => this.formatErrors()),
-    ).subscribe((errors) => {
-      if (_cachedErrors === JSON.stringify(errors)) {
-        return;
-      }
+    const sub = merge(this.parent.events$, this._events$)
+      .pipe(
+        skipWhile(() => this.skipValidate),
+        map(() => this.formatErrors())
+      )
+      .subscribe((errors) => {
+        if (_cachedErrors === JSON.stringify(errors)) {
+          return;
+        }
 
-      this.removeValidationErrors();
-      if (this.shouldShowValidate(errors)) {
-        _cachedErrors = JSON.stringify(errors);
-        this.showValidationErrors(errors);
-      } else {
-        _cachedErrors = '';
-      }
-    });
+        this.removeValidationErrors();
+        if (this.shouldShowValidate(errors)) {
+          _cachedErrors = JSON.stringify(errors);
+          this.showValidationErrors(errors);
+        } else {
+          _cachedErrors = '';
+        }
+      });
 
     this._subscriptions.add(sub);
   }
 
-  private shouldShowValidate(errors: Array<FormatedError>): boolean {
+  private shouldShowValidate(errors: FormatedError[]): boolean {
     if (errors.length <= 0) {
       return false;
     }
 
-    if (!this.config.validateOn || typeof this.config.validateOn !== 'function') {
+    if (
+      !this.config.validateOn ||
+      typeof this.config.validateOn !== 'function'
+    ) {
       return true;
     }
 
     return this.config.validateOn({
-      dirty: this.control.dirty || false,
-      touched: this.control.touched || false,
+      dirty: this.control.dirty ?? false,
+      touched: this.control.touched ?? false,
       submited: this.formGroupDirective.submitted,
     });
   }
 
-  private formatErrors(): Array<FormatedError> {
+  private formatErrors(): FormatedError[] {
     const errors = this.control.errors;
     if (!errors) {
       return [];
     }
 
-    return Object.keys(errors || {}).map(key => {
+    return Object.keys(errors || {}).map((key) => {
       const message = this.getErrorMessage(errors, key);
 
       return {
@@ -165,23 +203,23 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
         message,
         key,
       };
-    })
+    });
   }
 
   private getErrorMessage(errors: ValidationErrors, key: string): string {
-    if (errors[key] && errors[key]['message']) {
-      return errors[key]['message'];
+    if (errors[key]?.message) {
+      return errors[key].message;
     }
 
-    if (this.errorMessage && this.errorMessage[key]) {
+    if (this.errorMessage?.[key]) {
       return this.errorMessage[key];
     }
 
-    if (this.config.defaultErrorMessage && this.config.defaultErrorMessage[key]) {
-      return mapReplace(this.config.defaultErrorMessage[key], errors[key])
+    if (this.config.defaultErrorMessage?.[key]) {
+      return mapReplace(this.config.defaultErrorMessage[key], errors[key]);
     }
 
-    return this.config.unknownErrorMessage || '[This field is invalid]';
+    return this.config.unknownErrorMessage ?? '[This field is invalid]';
   }
 
   private removeValidationErrors(): void {
@@ -191,13 +229,23 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     }
   }
 
-  private showValidationErrors(errors: Array<FormatedError>) {
+  private showValidationErrors(errors: FormatedError[]): void {
     const viewContainerRef = this.getViewContainerRef();
 
-    if (this.validationMessageTemplateRef && this.validationMessageTemplateRef instanceof TemplateRef) {
-      this._errorRef = viewContainerRef.createEmbeddedView(this.validationMessageTemplateRef, { $implicit: errors }, viewContainerRef.length);
+    if (
+      this.validationMessageTemplateRef &&
+      this.validationMessageTemplateRef instanceof TemplateRef
+    ) {
+      this._errorRef = viewContainerRef.createEmbeddedView(
+        this.validationMessageTemplateRef,
+        { $implicit: errors },
+        viewContainerRef.length
+      );
     } else if (this.validationMessageComponent) {
-      this._errorRef = viewContainerRef.createComponent(this.validationMessageComponent, { index: viewContainerRef.length });
+      this._errorRef = viewContainerRef.createComponent(
+        this.validationMessageComponent,
+        { index: viewContainerRef.length }
+      );
 
       if (this._errorRef instanceof ComponentRef && this._errorRef.instance) {
         this._errorRef.instance.errors = errors;
@@ -207,7 +255,9 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
   }
 
   private getViewContainerRef(): ViewContainerRef {
-    const targetRef = this.containerRef ? this.containerRef.targetRef : this.targetRef;
+    const targetRef = this.containerRef
+      ? this.containerRef.targetRef
+      : this.targetRef;
     return targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
   }
 }
