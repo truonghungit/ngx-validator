@@ -14,16 +14,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: "yarn"
 
       - name: Install dependencies
-        run: yarn
+        run: npm install
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
       - name: Build library
-        run: yarn build:library
+        run: npm run build:library
 
       - name: Release
         uses: cycjimmy/semantic-release-action@v3
