@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "commit": "git-cz",
+    "bump-version": "rjp package.json version $VERSION",
     "build": "npm run build:library && npm run build:demo",
     "build:library": "ng build --project=ngx-validator && npm run copy-readme",
     "build:demo": "ng build --project=ngx-validator-demo",
