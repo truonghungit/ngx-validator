@@ -1,0 +1,180 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
+      <section class="mt-5">
+        <h3>
+          <small class="text-body-secondary">Simple form: </small>
+          Add education
+        </h3>
+
+        <div class="card login-card">
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="simpleForm">
+              <div class="mb-3">
+                <label for="school" class="form-label">School</label>
+                <input type="text" class="form-control" placeholder="Ex: Northwestern University" id="school"
+                  formControlName="school">
+              </div>
+              <div class="mb-3">
+                <label for="degree" class="form-label">Degree</label>
+                <select class="form-select" id="degree" formControlName="degree">
+                  <option value="">Select</option>
+                  <option value="DEng">Doctor of Engineering (DEng)</option>
+                  <option value="DMA">Doctor of Musical Arts (DMA)</option>
+                  <option value="BID">Bachelor of Industrial Design</option>
+                  <option value="DHA">Doctor of Healthcare Administration (DHA)</option>
+                  <option value="AD">Associate's degree</option>
+                  <option value="AA">Associate of Arts (AA)</option>
+                  <option value="AAS">Associate of Arts and Sciences (AAS)</option>
+                  <option value="AS">Associate of Science (AS)</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="school" class="form-label">Area of Study</label>
+                <input type="text" class="form-control" placeholder="Ex: Computer Science" id="areaOfStudy"
+                  formControlName="areaOfStudy">
+              </div>
+              <div class="mb-3">
+                <label for="description " class="form-label">Description (Optional) </label>
+                <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+              </div>
+              <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </div>
+    <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
+
+      <section class="mt-5">
+        <h3>
+          Nested form group
+        </h3>
+
+        <div class="card login-card">
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="nestedForm">
+              <div class="mb-3">
+                <label for="first-name" class="form-label">First name</label>
+                <input type="text" class="form-control" id="first-name" formControlName="firstName">
+              </div>
+              <div class="mb-3">
+                <label for="last-name" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="last-name" formControlName="lastName">
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email">
+              </div>
+              <div formGroupName="address">
+                <div class="mb-3">
+                  <label for="inputAddress" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" formControlName="address">
+                </div>
+                <div class="mb-3">
+                  <label for="inputAddress2" class="form-label">Address 2</label>
+                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" formControlName="address2">
+                </div>
+                <div class="mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input type="text" class="form-control" id="city" formControlName="city">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" formControlName="password">
+              </div>
+              <div class="mb-3">
+                <label for="confirm-password" class="form-label">Confirm password</label>
+                <input type="password" class="form-control" id="confirm-password" formControlName="confirmPassword">
+              </div>
+
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gridCheck" formControlName="agreeTermsCondition">
+                  <label class="form-check-label" for="gridCheck">
+                    Agree to terms and conditions
+                  </label>
+                </div>
+              </div>
+
+              <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
+      <section class="mt-5">
+        <h3>
+          Form grid
+        </h3>
+        <form class="row g-3" (ngSubmit)="onSubmit()" [formGroup]="nestedForm">
+          <div class="col-md-6">
+            <label for="first-name" class="form-label">First name</label>
+            <input type="text" class="form-control" id="first-name" formControlName="firstName">
+          </div>
+          <div class="col-md-6">
+            <label for="last-name" class="form-label">Last name</label>
+            <input type="text" class="form-control" id="last-name" formControlName="lastName">
+          </div>
+
+          <div class="col-12">
+            <div class="row g-3" formGroupName="address">
+              <div class="col-12">
+                <label for="inputAddress" class="form-label">Address</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" formControlName="address">
+              </div>
+              <div class="col-12">
+                <label for="inputAddress2" class="form-label">Address 2</label>
+                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" formControlName="address2">
+              </div>
+              <div class="col-md-6">
+                <label for="inputCity" class="form-label">City</label>
+                <input type="text" class="form-control" id="inputCity" formControlName="city">
+              </div>
+              <div class="col-md-4">
+                <label for="inputState" class="form-label">State</label>
+                <select id="inputState" class="form-select" formControlName="state">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label for="inputZip" class="form-label">Zip</label>
+                <input type="text" class="form-control" id="inputZip" formControlName="zip">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+          </div>
+          <div class="col-md-6">
+            <label for="confirm-password" class="form-label">Confirm password</label>
+            <input type="password" class="form-control" id="confirm-password" formControlName="confirmPassword">
+          </div>
+
+          <div class="col-12">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck" formControlName="agreeTermsCondition">
+              <label class="form-check-label" for="gridCheck">
+                Agree to terms and conditions
+              </label>
+            </div>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

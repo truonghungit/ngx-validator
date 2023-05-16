@@ -21,6 +21,7 @@
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/object-curly-spacing": "off",
+    "@typescript-eslint/indent": "off",
     "no-prototype-builtins": "off",
     "padded-blocks": "off"
   }

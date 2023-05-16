@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { FormValidatorModule, FormValidatorConfig } from 'projects/ngx-validator/src/public-api';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormValidatorModule, FormValidatorConfig } from 'projects/ngx-validator/src/public-api';
-import { ReactiveFormsModule } from '@angular/forms';
+import { BootstrapComponent } from './bootstrap/bootstrap.component';
 
 const formValidatorConfig: FormValidatorConfig = {
-  validateOn: ({ dirty, touched, submited }) => {
-    return (dirty && touched) || submited;
-  }
 }
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BootstrapComponent
   ],
   imports: [
     BrowserModule,
