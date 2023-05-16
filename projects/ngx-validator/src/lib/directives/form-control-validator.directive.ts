@@ -32,6 +32,7 @@ import {
   FormEventType,
   FormValidatorConfig,
   FormatedError,
+  UIFramework,
 } from '../models';
 import {
   BaseValidationMessagesComponent,
@@ -96,11 +97,16 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
 
   private _subscriptions = new Subscription();
   private _errorRef:
-  | ComponentRef<BaseValidationMessagesComponent>
-  | EmbeddedViewRef<any>
-  | null = null;
+    | ComponentRef<BaseValidationMessagesComponent>
+    | EmbeddedViewRef<any>
+    | null = null;
 
   private _events$ = new Subject<FormEvent>();
+  private _cachedValidationErrors = '';
+
+  private get hasCacheValidationErrors(): boolean {
+    return Boolean(this._cachedValidationErrors);
+  }
 
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -123,8 +129,8 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     private readonly config: FormValidatorConfig,
 
     @Optional()
-    public readonly parentFormGroupValidatorDirective: FormGroupValidatorDirective
-  ) {}
+    public readonly parentFormGroupValidatorDirective: FormGroupValidatorDirective,
+  ) { }
 
   ngAfterViewInit(): void {
     this.listenFormEvents();
@@ -132,6 +138,7 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscriptions.unsubscribe();
+    this.removeValidationErrors();
   }
 
   @HostListener('blur', ['$event'])
@@ -144,31 +151,19 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
       return;
     }
 
-    let _cachedErrors = '';
-
     const sub = merge(this.parent.events$, this._events$)
       .pipe(
         skipWhile(() => this.skipValidate),
         map(() => this.formatErrors())
       )
       .subscribe((errors) => {
-        if (_cachedErrors === JSON.stringify(errors)) {
-          return;
-        }
-
-        this.removeValidationErrors();
-        if (this.shouldShowValidate(errors)) {
-          _cachedErrors = JSON.stringify(errors);
-          this.showValidationErrors(errors);
-        } else {
-          _cachedErrors = '';
-        }
+        this.validate(errors);
       });
 
     this._subscriptions.add(sub);
   }
 
-  private shouldShowValidate(errors: FormatedError[]): boolean {
+  private shouldShowValidationError(errors: FormatedError[]): boolean {
     if (errors.length <= 0) {
       return false;
     }
@@ -227,8 +222,50 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     }
   }
 
-  private showValidationErrors(errors: FormatedError[]): void {
-    const viewContainerRef = this.getViewContainerRef();
+  private cacheValidationErrors(errors: FormatedError[]): void {
+    this._cachedValidationErrors = JSON.stringify(errors);
+  }
+
+  private clearCacheValidationErrors(): void {
+    this._cachedValidationErrors = '';
+  }
+
+  private isValidationErrorsChanged(errors: FormatedError[]): boolean {
+    return this._cachedValidationErrors !== JSON.stringify(errors);
+  }
+
+  private validate(errors: FormatedError[]): void {
+    if (!this.isValidationErrorsChanged(errors)) {
+      return;
+    }
+
+    if (this.config.uiFrameWork === 'auto') {
+      console.log('Validation');
+    }
+
+    const uiFrameWork = this.config.uiFrameWork === 'auto' ? this.detectUIFramework() : this.config.uiFrameWork;
+
+    switch (uiFrameWork) {
+      case UIFramework.Bootstrap:
+        this.bootstrapValidate(errors);
+        break;
+
+      default:
+        this.defaultValidate(errors);
+        break;
+    }
+  }
+
+  private getViewContainerRef(): ViewContainerRef {
+    const targetRef = this.containerRef
+      ? this.containerRef.targetRef
+      : this.targetRef;
+    return targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
+  }
+
+  private defaultValidate(errors: FormatedError[]): void {
+    const targetRef = this.containerRef ? this.containerRef.targetRef : this.targetRef;
+    const viewContainerRef = targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
 
     if (
       this.validationMessageTemplateRef &&
@@ -242,7 +279,9 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     } else if (this.validationMessageComponent) {
       this._errorRef = viewContainerRef.createComponent(
         this.validationMessageComponent,
-        { index: viewContainerRef.length }
+        {
+          index: viewContainerRef.length
+        }
       );
 
       if (this._errorRef instanceof ComponentRef && this._errorRef.instance) {
@@ -252,10 +291,82 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     }
   }
 
-  private getViewContainerRef(): ViewContainerRef {
-    const targetRef = this.containerRef
-      ? this.containerRef.targetRef
-      : this.targetRef;
-    return targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
+  private bootstrapValidate(errors: FormatedError[]): void {
+    this.removeValidationErrors();
+
+    if (this.shouldShowValidationError(errors)) {
+      if (!this.hasCacheValidationErrors) {
+        this.bootstrapAddErrorClassToControl();
+      }
+      this.bootstrapShowValidationError(errors);
+      this.cacheValidationErrors(errors);
+    } else {
+      this.clearCacheValidationErrors();
+      this.bootstrapRemoveErrorClassFromControl();
+    }
+  }
+
+  private bootstrapAddErrorClassToControl(): void {
+    (this.elementRef.nativeElement as HTMLElement).classList.add('is-invalid');
+  }
+
+  private bootstrapRemoveErrorClassFromControl(): void {
+    (this.elementRef.nativeElement as HTMLElement).classList.remove('is-invalid');
+  }
+
+  private bootstrapShowValidationError(errors: FormatedError[]): void {
+    const targetRef = this.containerRef ? this.containerRef.targetRef : this.targetRef;
+    const viewContainerRef = targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
+
+    if (
+      this.validationMessageTemplateRef &&
+      this.validationMessageTemplateRef instanceof TemplateRef
+    ) {
+      this._errorRef = viewContainerRef.createEmbeddedView(
+        this.validationMessageTemplateRef,
+        { $implicit: errors },
+        viewContainerRef.length
+      );
+    } else if (this.validationMessageComponent) {
+      this._errorRef = viewContainerRef.createComponent(
+        this.validationMessageComponent,
+        {
+          index: viewContainerRef.length
+        }
+      );
+
+      if (this._errorRef instanceof ComponentRef && this._errorRef.instance) {
+        this._errorRef.instance.errors = errors;
+        this._errorRef.instance.classes = 'invalid-feedback';
+        this.changeDetectorRef.detectChanges();
+      }
+    }
+
+    if (!targetRef) {
+      let rootNode: HTMLElement | null = null;
+      if (this._errorRef instanceof ComponentRef) {
+        rootNode = (this._errorRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+      } else if (this._errorRef instanceof EmbeddedViewRef) {
+        rootNode = this._errorRef.rootNodes[0] as HTMLElement;
+      }
+
+      const containerTarget = (viewContainerRef.element.nativeElement as HTMLElement).parentElement;
+      if (rootNode && containerTarget) {
+        containerTarget.appendChild(rootNode);
+      }
+    }
+  }
+
+  private detectUIFramework(): UIFramework {
+    const classList = (this.elementRef.nativeElement as HTMLElement).classList;
+    if (classList.contains('form-control') || classList.contains('form-select') || classList.contains('form-check-input')) {
+      return UIFramework.Bootstrap
+    }
+
+    if (classList.contains('mat-input-element') || classList.contains('mat-select')) {
+      return UIFramework.AngularMaterial
+    }
+
+    return UIFramework.None;
   }
 }

@@ -1,8 +1,8 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[validatorTarget]',
-  exportAs: 'validatorTarget',
+  selector: '[validatorMessagesTarget]',
+  exportAs: 'validatorMessagesTarget',
 })
 export class ValidatorTargetDirective {
   constructor(public viewContainerRef: ViewContainerRef) {}

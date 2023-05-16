@@ -15,8 +15,16 @@ export interface FormEvent {
   value?: any;
 }
 
+export const enum UIFramework {
+  Bootstrap = 'bootstrap',
+  AngularMaterial = 'angular-material',
+  Auto = 'auto',
+  None = 'none',
+}
+
 export interface FormValidatorConfig {
   skipValidate?: boolean;
+  uiFrameWork?: UIFramework | 'default' | 'auto';
   defaultErrorMessage?: ErrorMessage;
   unknownErrorMessage?: string;
   validationMessagesComponent?: Type<BaseValidationMessagesComponent>;

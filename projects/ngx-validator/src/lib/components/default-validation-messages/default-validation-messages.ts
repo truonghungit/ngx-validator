@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation } from '@angular/core';
 import { BaseValidationMessagesComponent } from '../base-validation-messages';
 
 @Component({
@@ -9,7 +9,8 @@ import { BaseValidationMessagesComponent } from '../base-validation-messages';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class DefaultValidationMessagesComponent extends BaseValidationMessagesComponent {
+  @HostBinding('class') override classes: string = '';
 }

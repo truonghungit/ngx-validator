@@ -1,13 +1,19 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormValidatorConfig } from './models';
+import { FormValidatorConfig, UIFramework } from './models';
 import { FORM_VALIDATOR_CONFIGURATION } from './form-validator-token';
 import { DefaultValidationMessagesComponent } from './components';
-import { FormGroupValidatorDirective, FormControlValidatorDirective } from './directives';
+import {
+  FormGroupValidatorDirective,
+  FormControlValidatorDirective,
+  ValidatorContainerDirective,
+  ValidatorTargetDirective
+} from './directives';
 
 export const defaultFormValidationConfig: FormValidatorConfig = {
   skipValidate: false,
+  uiFrameWork: UIFramework.Auto,
   validateOn: ({ dirty, touched, submited }) => {
     return (dirty && touched) || submited;
   },
@@ -30,6 +36,8 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
   declarations: [
     FormGroupValidatorDirective,
     FormControlValidatorDirective,
+    ValidatorContainerDirective,
+    ValidatorTargetDirective,
     DefaultValidationMessagesComponent,
   ],
   providers: [
@@ -40,7 +48,9 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
   ],
   exports: [
     FormGroupValidatorDirective,
-    FormControlValidatorDirective
+    FormControlValidatorDirective,
+    ValidatorContainerDirective,
+    ValidatorTargetDirective,
   ],
 })
 export class FormValidatorModule {
