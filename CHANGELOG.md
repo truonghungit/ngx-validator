@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/truonghungit/ngx-validator/compare/v1.0.0...v2.0.0) (2023-05-16)
+
+
+### Features
+
+* :sparkles: update validate function to suport bootstrap ([db22ec7](https://github.com/truonghungit/ngx-validator/commit/db22ec762582f0d2c6eefcb92cd08f79465341ba))
+
+
+### BREAKING CHANGES
+
+* add bootstrap validation message, change validator target selector
+
 # 1.0.0 (2023-05-15)
 
 
