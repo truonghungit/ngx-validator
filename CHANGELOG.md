@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/truonghungit/ngx-validator/compare/v2.0.0...v2.1.0) (2023-05-18)
+
+
+### Features
+
+* add validate for angular material UI ([b5347ee](https://github.com/truonghungit/ngx-validator/commit/b5347ee4189196e95f2558d6cbbb6ee0417a8633))
+
 # [2.0.0](https://github.com/truonghungit/ngx-validator/compare/v1.0.0...v2.0.0) (2023-05-16)
 
 
