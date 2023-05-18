@@ -1,6 +1,14 @@
 import { Type } from '@angular/core';
-import { ValidationMessages } from './error-message';
-import { BaseValidationMessagesComponent } from '../components';
+import { BaseValidationMessagesComponent } from './components';
+
+export interface ValidationMessages {
+  [key: string]: string;
+}
+
+export interface FormatedError {
+  key: string;
+  message: string;
+}
 
 export enum FormEventType {
   FormInitial = 'FORM_INITIAL',

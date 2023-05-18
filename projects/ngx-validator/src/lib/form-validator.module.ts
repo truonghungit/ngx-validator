@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormValidatorConfig, UIFramework } from './models';
+import { FormValidatorConfig, UIFramework } from './form-validator.model';
 import { FORM_VALIDATOR_CONFIGURATION } from './form-validator-token';
 import { DefaultValidationMessagesComponent } from './components';
 import {

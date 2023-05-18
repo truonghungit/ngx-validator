@@ -33,7 +33,7 @@ import {
   FormValidatorConfig,
   FormatedError,
   UIFramework,
-} from '../models';
+} from '../form-validator.model';
 import {
   BaseValidationMessagesComponent,
   DefaultValidationMessagesComponent,

@@ -1,5 +1,5 @@
 import { TrackByFunction } from '@angular/core';
-import { FormatedError } from '../models';
+import { FormatedError } from '../form-validator.model';
 
 export abstract class BaseValidationMessagesComponent {
   errors: FormatedError[] = [];

@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormGroupName } from '@angular/forms';
 import { merge, NEVER, Observable, Subject, Subscription } from 'rxjs';
-import { FormEvent, FormEventType, FormValidatorConfig } from '../models';
+import { FormEvent, FormEventType, FormValidatorConfig } from '../form-validator.model';
 import { FORM_VALIDATOR_CONFIGURATION } from '../form-validator-token';
 
 @Directive({
