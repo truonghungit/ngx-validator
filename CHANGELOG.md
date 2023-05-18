@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/truonghungit/ngx-validator/compare/v2.1.0...v2.2.0) (2023-05-18)
+
+
+### Features
+
+* :sparkles: add url validator function ([c8ee3c8](https://github.com/truonghungit/ngx-validator/commit/c8ee3c8702c989d7434801ffe8bafc1f42f4751f))
+
 # [2.1.0](https://github.com/truonghungit/ngx-validator/compare/v2.0.0...v2.1.0) (2023-05-18)
 
 
