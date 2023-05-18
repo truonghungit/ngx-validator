@@ -197,6 +197,65 @@ export class AppModule { }
 
 ```
 
+## Reference
+
+### Directives
+
+#### FormGroupValidatorDirective
+
+Selector: `[formGroup],[formGroupName]`
+
+Exported as: `formGroupValidator`
+
+##### Properties
+
+#### FormControlValidatorDirective
+
+Selector: `[formControl],[formControlName]`
+
+Exported as: `formControlValidator`
+##### Properties
+
+### Validators
+
+We wrap the build-in angular validator to allow passing the error message to the validator function.
+
+#### min()
+Validator that requires the control's value to be greater than or equal to the provided number.
+
+`min(min: number, message: string): ValidatorFn`
+
+##### Parameters
+| Name                          | Type    |
+| ------------------------------| ------- |
+| min                           | number  |
+| message                       | string  |
+
+##### Examples:
+```typescript
+const control = new FormControl(2, min(10, 'Value should be greater than or equal to 10'));
+
+console.log(control.errors); // {min: {min: 10, actual: 2, message: 'Value should be greater than or equal to 10'}}
+```
+
+#### max()
+Validator that requires the control's value to be less than or equal to the provided number.
+
+`max(max: number, message: string): ValidatorFn`
+
+##### Parameters
+| Name                          | Type    |
+| ------------------------------| ------- |
+| max                           | number  |
+| message                       | string  |
+
+##### Examples:
+```typescript
+const control = new FormControl(2, max(10, 'Value should be less than or equal to 10'));
+
+console.log(control.errors); // {min: {max: 10, actual: 2, message: 'Value should be less than or equal to 10'}}
+```
+
 ### Configuration Options
 #### skipValidate
 Default is `false`.
@@ -214,3 +273,4 @@ const formValidatorConfig: FormValidatorConfig = {
   }
 }
 ```
+

@@ -5,11 +5,13 @@ import { FormValidatorConfig, UIFramework } from './models';
 import { FORM_VALIDATOR_CONFIGURATION } from './form-validator-token';
 import { DefaultValidationMessagesComponent } from './components';
 import {
-  FormGroupValidatorDirective,
   FormControlValidatorDirective,
+  FormGroupValidatorDirective,
+  MatFormFieldDirective,
   ValidatorContainerDirective,
   ValidatorTargetDirective
 } from './directives';
+import { MatValidationMessagesComponent } from './components/mat-validation-messages/mat-validation-messages.component';
 
 export const defaultFormValidationConfig: FormValidatorConfig = {
   skipValidate: false,
@@ -34,11 +36,13 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
     CommonModule
   ],
   declarations: [
-    FormGroupValidatorDirective,
+    DefaultValidationMessagesComponent,
+    MatValidationMessagesComponent,
     FormControlValidatorDirective,
+    FormGroupValidatorDirective,
+    MatFormFieldDirective,
     ValidatorContainerDirective,
     ValidatorTargetDirective,
-    DefaultValidationMessagesComponent,
   ],
   providers: [
     {
@@ -47,8 +51,9 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
     }
   ],
   exports: [
-    FormGroupValidatorDirective,
     FormControlValidatorDirective,
+    FormGroupValidatorDirective,
+    MatFormFieldDirective,
     ValidatorContainerDirective,
     ValidatorTargetDirective,
   ],

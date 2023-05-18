@@ -37,7 +37,7 @@ export class BootstrapComponent {
     school: ['', [Validators.required]],
     degree: ['', [Validators.required]],
     areaOfStudy: ['', [Validators.required]],
-    description: [''],
+    description: ['', [Validators.required]],
   });
 
   nestedForm = this.formBuilder.group({

@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-10 col-lg-8 col-xl-6">
+      <section class="mt-5">
+        <h3>
+          <small class="text-body-secondary">Simple form: </small>
+          Add education
+        </h3>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="simpleForm">
+          <mat-card>
+            <mat-card-content>
+              <mat-form-field appearance="outline" class="mb-3">
+                <mat-label>School</mat-label>
+                <input matInput placeholder="Ex: Northwestern University" formControlName="school">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="mb-3">
+                <mat-label>Area of Study</mat-label>
+                <input matInput placeholder="Ex: Northwestern University" formControlName="school">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="mb-3">
+                <mat-label>Description</mat-label>
+                <input matInput placeholder="Ex: Northwestern University" formControlName="school">
+              </mat-form-field>
+            </mat-card-content>
+
+            <mat-card-actions>
+              <button mat-raised-button color="primary">LIKE</button>
+            </mat-card-actions>
+
+          </mat-card>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

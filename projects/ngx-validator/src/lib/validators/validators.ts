@@ -51,7 +51,7 @@ function isEmptyInputValue(value: any): boolean {
  * ### Validate against a minimum of 3
  *
  * ```typescript
- * const control = new FormControl(2, Validators.min(3));
+ * const control = new FormControl(2, min(3));
  *
  * console.log(control.errors); // {min: {min: 3, actual: 2}}
  * ```
@@ -75,7 +75,7 @@ export function min(min: number, message: string): ValidatorFn {
  * ### Validate against a maximum of 15
  *
  * ```typescript
- * const control = new FormControl(16, Validators.max(15));
+ * const control = new FormControl(16, max(15));
  *
  * console.log(control.errors); // {max: {max: 15, actual: 16}}
  * ```

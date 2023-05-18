@@ -12,14 +12,8 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
-      "ngx-show-hide-password": [
-        "dist/ngx-show-hide-password"
-      ],
       "ngx-validator": [
         "dist/ngx-validator"
-      ],
-      "ngx-webstorage": [
-        "dist/ngx-webstorage"
       ]
     },
     "declaration": false,

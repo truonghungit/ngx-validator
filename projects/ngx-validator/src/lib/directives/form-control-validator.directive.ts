@@ -37,9 +37,11 @@ import {
 import {
   BaseValidationMessagesComponent,
   DefaultValidationMessagesComponent,
+  MatValidationMessagesComponent,
 } from '../components';
 import { ValidatorContainerDirective } from './validator-container.directive';
 import { ValidatorTargetDirective } from './validator-target.directive';
+import { MatFormFieldDirective } from './mat-form-field.directive';
 
 export function interpolate(text: string): string {
   return '{{\\s*(' + text + ')\\s*}}';
@@ -127,6 +129,9 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
 
     @Inject(FORM_VALIDATOR_CONFIGURATION)
     private readonly config: FormValidatorConfig,
+
+    @Optional()
+    private readonly matFormFieldDirective: MatFormFieldDirective,
 
     @Optional()
     public readonly parentFormGroupValidatorDirective: FormGroupValidatorDirective,
@@ -250,6 +255,10 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
         this.bootstrapValidate(errors);
         break;
 
+      case UIFramework.AngularMaterial:
+        this.angularMaterialValidate(errors);
+        break;
+
       default:
         this.defaultValidate(errors);
         break;
@@ -264,6 +273,30 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
   }
 
   private defaultValidate(errors: FormatedError[]): void {
+    this.removeValidationErrors();
+
+    if (this.shouldShowValidationError(errors)) {
+      this.defaultShowValidationError(errors);
+      this.cacheValidationErrors(errors);
+    } else {
+      this.clearCacheValidationErrors();
+    }
+  }
+
+  private defaultShowValidationError(errors: FormatedError[]): void {
+    this.removeValidationErrors();
+
+    if (this.shouldShowValidationError(errors)) {
+      if (!this.hasCacheValidationErrors) {
+        this.bootstrapAddErrorClassToControl();
+      }
+      this.bootstrapShowValidationError(errors);
+      this.cacheValidationErrors(errors);
+    } else {
+      this.clearCacheValidationErrors();
+      this.bootstrapRemoveErrorClassFromControl();
+    }
+
     const targetRef = this.containerRef ? this.containerRef.targetRef : this.targetRef;
     const viewContainerRef = targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
 
@@ -357,13 +390,66 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     }
   }
 
+  private angularMaterialValidate(errors: FormatedError[]): void {
+    this.removeValidationErrors();
+
+    if (this.shouldShowValidationError(errors)) {
+      this.angularMaterialShowValidationError(errors);
+      this.cacheValidationErrors(errors);
+    } else {
+      this.clearCacheValidationErrors();
+    }
+  }
+
+  private angularMaterialShowValidationError(errors: FormatedError[]): void {
+    const viewContainerRef = this.viewContainerRef;
+
+    if (
+      this.validationMessageTemplateRef &&
+      this.validationMessageTemplateRef instanceof TemplateRef
+    ) {
+      this._errorRef = viewContainerRef.createEmbeddedView(
+        this.validationMessageTemplateRef,
+        { $implicit: errors },
+        viewContainerRef.length
+      );
+    } else {
+      this._errorRef = viewContainerRef.createComponent(
+        MatValidationMessagesComponent,
+        {
+          index: viewContainerRef.length
+        }
+      );
+
+      if (this._errorRef instanceof ComponentRef && this._errorRef.instance) {
+        this._errorRef.instance.errors = errors;
+        this._errorRef.instance.classes = 'mat-mdc-form-field-error-wrapper';
+        this.changeDetectorRef.detectChanges();
+      }
+    }
+
+    let rootNode: HTMLElement | null = null;
+    if (this._errorRef instanceof ComponentRef) {
+      rootNode = (this._errorRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+    } else if (this._errorRef instanceof EmbeddedViewRef) {
+      rootNode = this._errorRef.rootNodes[0] as HTMLElement;
+    }
+
+    const selector = '.mat-mdc-form-field-subscript-wrapper';
+
+    const containerTarget = (this.matFormFieldDirective.elementRef.nativeElement as HTMLElement).querySelector(selector);
+    if (rootNode && containerTarget) {
+      containerTarget.appendChild(rootNode);
+    }
+  }
+
   private detectUIFramework(): UIFramework {
     const classList = (this.elementRef.nativeElement as HTMLElement).classList;
     if (classList.contains('form-control') || classList.contains('form-select') || classList.contains('form-check-input')) {
       return UIFramework.Bootstrap
     }
 
-    if (classList.contains('mat-input-element') || classList.contains('mat-select')) {
+    if (this.matFormFieldDirective && (classList.contains('mat-mdc-input-element') || classList.contains('mat-mdc-select'))) {
       return UIFramework.AngularMaterial
     }
 
