@@ -1,4 +1,4 @@
-export interface ErrorMessage {
+export interface ValidationMessages {
   [key: string]: string;
 }
 

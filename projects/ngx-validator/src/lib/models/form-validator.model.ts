@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { ErrorMessage } from './error-message';
+import { ValidationMessages } from './error-message';
 import { BaseValidationMessagesComponent } from '../components';
 
 export enum FormEventType {
@@ -22,15 +22,13 @@ export const enum UIFramework {
   None = 'none',
 }
 
+export type ValidateOnFn = (status: { dirty: boolean; touched: boolean; submited: boolean }) => boolean;
+
 export interface FormValidatorConfig {
   skipValidate?: boolean;
   uiFrameWork?: UIFramework | 'default' | 'auto';
-  defaultErrorMessage?: ErrorMessage;
-  unknownErrorMessage?: string;
+  validationMessages?: ValidationMessages;
+  unknownErrorValidationMessage?: string;
   validationMessagesComponent?: Type<BaseValidationMessagesComponent>;
-  validateOn?: (status: {
-    dirty: boolean;
-    touched: boolean;
-    submited: boolean;
-  }) => boolean;
+  validateOn?: ValidateOnFn;
 }

@@ -19,8 +19,8 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
   validateOn: ({ dirty, touched, submited }) => {
     return (dirty && touched) || submited;
   },
-  unknownErrorMessage: '[This field is invalid]',
-  defaultErrorMessage: {
+  unknownErrorValidationMessage: '[This field is invalid]',
+  validationMessages: {
     required: 'This field is required.',
     email: 'Email is invalid',
     max: 'Value should be less than or equal to {{ max }}.',

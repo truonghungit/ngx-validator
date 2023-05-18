@@ -27,7 +27,7 @@ import { skipWhile } from 'rxjs/operators';
 import { FormGroupValidatorDirective } from './form-group-validator.directive';
 import { FORM_VALIDATOR_CONFIGURATION } from '../form-validator-token';
 import {
-  ErrorMessage,
+  ValidationMessages,
   FormEvent,
   FormEventType,
   FormValidatorConfig,
@@ -74,9 +74,9 @@ export function mapReplace(
 export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
   @Input('skipValidate') _skipValidate = false;
 
-  @Input() errorMessage: ErrorMessage | null = null;
+  @Input() validationMessages: ValidationMessages | null = null;
 
-  @Input() validationMessageTemplateRef: TemplateRef<any> | null = null;
+  @Input() validationMessagesTemplateRef: TemplateRef<any> | null = null;
 
   get parent(): Partial<FormGroupValidatorDirective> {
     return this.parentFormGroupValidatorDirective;
@@ -209,15 +209,15 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
       return errors[key].message;
     }
 
-    if (this.errorMessage?.[key]) {
-      return this.errorMessage[key];
+    if (this.validationMessages?.[key]) {
+      return this.validationMessages[key];
     }
 
-    if (this.config.defaultErrorMessage?.[key]) {
-      return mapReplace(this.config.defaultErrorMessage[key], errors[key]);
+    if (this.config.validationMessages?.[key]) {
+      return mapReplace(this.config.validationMessages[key], errors[key]);
     }
 
-    return this.config.unknownErrorMessage ?? '[This field is invalid]';
+    return this.config.unknownErrorValidationMessage ?? '[This field is invalid]';
   }
 
   private removeValidationErrors(): void {
@@ -301,11 +301,11 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     const viewContainerRef = targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
 
     if (
-      this.validationMessageTemplateRef &&
-      this.validationMessageTemplateRef instanceof TemplateRef
+      this.validationMessagesTemplateRef &&
+      this.validationMessagesTemplateRef instanceof TemplateRef
     ) {
       this._errorRef = viewContainerRef.createEmbeddedView(
-        this.validationMessageTemplateRef,
+        this.validationMessagesTemplateRef,
         { $implicit: errors },
         viewContainerRef.length
       );
@@ -352,11 +352,11 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     const viewContainerRef = targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
 
     if (
-      this.validationMessageTemplateRef &&
-      this.validationMessageTemplateRef instanceof TemplateRef
+      this.validationMessagesTemplateRef &&
+      this.validationMessagesTemplateRef instanceof TemplateRef
     ) {
       this._errorRef = viewContainerRef.createEmbeddedView(
-        this.validationMessageTemplateRef,
+        this.validationMessagesTemplateRef,
         { $implicit: errors },
         viewContainerRef.length
       );
@@ -405,11 +405,11 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
     const viewContainerRef = this.viewContainerRef;
 
     if (
-      this.validationMessageTemplateRef &&
-      this.validationMessageTemplateRef instanceof TemplateRef
+      this.validationMessagesTemplateRef &&
+      this.validationMessagesTemplateRef instanceof TemplateRef
     ) {
       this._errorRef = viewContainerRef.createEmbeddedView(
-        this.validationMessageTemplateRef,
+        this.validationMessagesTemplateRef,
         { $implicit: errors },
         viewContainerRef.length
       );
