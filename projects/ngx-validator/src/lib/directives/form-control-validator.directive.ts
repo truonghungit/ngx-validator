@@ -244,10 +244,6 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
       return;
     }
 
-    if (this.config.uiFrameWork === 'auto') {
-      console.log('Validation');
-    }
-
     const uiFrameWork = this.config.uiFrameWork === 'auto' ? this.detectUIFramework() : this.config.uiFrameWork;
 
     switch (uiFrameWork) {

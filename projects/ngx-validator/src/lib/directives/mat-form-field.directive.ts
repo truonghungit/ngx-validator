@@ -1,5 +1,4 @@
 import { Directive, ElementRef, ViewContainerRef } from '@angular/core';
-import { MatFormField } from '@angular/material/form-field';
 
 @Directive({
   selector: 'mat-error',
@@ -7,7 +6,6 @@ import { MatFormField } from '@angular/material/form-field';
 })
 export class MatErrorDirective {
   constructor(public viewContainerRef: ViewContainerRef) {
-    console.log('MatErrorDirective');
   }
 }
 
@@ -16,17 +14,6 @@ export class MatErrorDirective {
   exportAs: 'matFormField',
 })
 export class MatFormFieldDirective {
-  constructor(public matFormField: MatFormField, public elementRef: ElementRef) {
-    console.log('MatFormFieldDirective');
+  constructor(public elementRef: ElementRef) {
   }
-
-  ngAfterContentInit(): void {
-    console.log('matFormField ');
-    this.matFormField._errorChildren.changes.subscribe(e => {
-
-      console.log('hihi-----------', e);
-    });
-
-  }
-
 }
