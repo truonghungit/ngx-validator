@@ -1,6 +1,15 @@
 import { ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation } from '@angular/core';
+import { animate, state, style, trigger, transition } from '@angular/animations';
+
 import { BaseValidationMessagesComponent } from '../base-validation-messages';
-import { matFormFieldAnimations } from '@angular/material/form-field';
+
+const transitionMessages = trigger('transitionMessages', [
+  state('enter', style({ opacity: 1, transform: 'translateY(0%)' })),
+  transition('void => enter', [
+    style({ opacity: 0, transform: 'translateY(-5px)' }),
+    animate('300ms cubic-bezier(0.55, 0, 0.55, 0.2)'),
+  ]),
+]);
 
 @Component({
   selector: 'validation-messages',
@@ -11,7 +20,7 @@ import { matFormFieldAnimations } from '@angular/material/form-field';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  animations: [matFormFieldAnimations.transitionMessages],
+  animations: [transitionMessages],
 })
 export class MatValidationMessagesComponent extends BaseValidationMessagesComponent {
   @HostBinding('class') override classes: string = '';
