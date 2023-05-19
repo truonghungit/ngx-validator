@@ -313,16 +313,13 @@ export function maxLength(maxLength: number, message: string): ValidatorFn {
  * @see `updateValueAndValidity()`
  *
  */
-export function pattern(
-  pattern: string | RegExp,
-  message: string
-): ValidatorFn {
+export function pattern(pattern: string | RegExp, message: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     return validate(NgValidators.pattern(pattern), 'pattern', control, message);
   };
 }
 
-export function range(range: [number, number], message: string): ValidatorFn {
+export function range(range: [number, number], message?: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (isEmptyInputValue(control.value) || isEmptyInputValue(range)) {
       return null; // don't validate empty values to allow optional controls

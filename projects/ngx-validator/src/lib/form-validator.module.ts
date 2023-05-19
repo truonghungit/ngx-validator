@@ -28,6 +28,8 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
     min: 'Value should be greater than or equal to {{ min }}.',
     minlength: 'Should have at least {{ requiredLength }} characters.',
     pattern: 'Invalid pattern. Please review your input.',
+    range: 'Value should be in the range of {{ range }}',
+    url: 'URL is invalid.',
   }
 }
 
