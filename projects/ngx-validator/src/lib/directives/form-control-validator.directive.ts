@@ -284,18 +284,6 @@ export class FormControlValidatorDirective implements AfterViewInit, OnDestroy {
   }
 
   private defaultShowValidationError(errors: FormatedError[]): void {
-    this.removeValidationErrors();
-
-    if (this.shouldShowValidationError(errors)) {
-      if (!this.hasCacheValidationErrors) {
-        this.bootstrapAddErrorClassToControl();
-      }
-      this.bootstrapShowValidationError(errors);
-      this.cacheValidationErrors(errors);
-    } else {
-      this.clearCacheValidationErrors();
-      this.bootstrapRemoveErrorClassFromControl();
-    }
 
     const targetRef = this.containerRef ? this.containerRef.targetRef : this.targetRef;
     const viewContainerRef = targetRef ? targetRef.viewContainerRef : this.viewContainerRef;
