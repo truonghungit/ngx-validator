@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/truonghungit/ngx-validator/compare/v2.3.0...v2.4.0) (2023-05-19)
+
+
+### Features
+
+* :sparkles: add default validation message for range and url ([b7e9522](https://github.com/truonghungit/ngx-validator/commit/b7e95221223f39608db27b1a4b7e5f88fae4326c))
+
 # [2.3.0](https://github.com/truonghungit/ngx-validator/compare/v2.2.0...v2.3.0) (2023-05-19)
 
 
