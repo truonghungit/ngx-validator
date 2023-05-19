@@ -341,7 +341,7 @@ export function range(range: [number, number], message: string): ValidatorFn {
   };
 }
 
-export function url(message: string): ValidatorFn {
+export function url(message?: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (isEmptyInputValue(control.value) || isEmptyInputValue(range)) {
       return null; // don't validate empty values to allow optional controls
