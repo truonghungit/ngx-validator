@@ -1,3 +1,16 @@
+# [2.3.0](https://github.com/truonghungit/ngx-validator/compare/v2.2.0...v2.3.0) (2023-05-19)
+
+
+### Bug Fixes
+
+* :bug: resolve display duplicate validation message ([728b7d1](https://github.com/truonghungit/ngx-validator/commit/728b7d14dccebe88d2610564746380a9040279d9))
+
+
+### Features
+
+* :sparkles: add transition message animation, remove angular material import ([05a241f](https://github.com/truonghungit/ngx-validator/commit/05a241f4d08d053f7d2dd5f8592d66ed05772b53))
+* :sparkles: make the message parameter in the url validator function is optional ([1cebbc6](https://github.com/truonghungit/ngx-validator/commit/1cebbc6f3896153bd6e0eb6cbb59ff4717e97048))
+
 # [2.2.0](https://github.com/truonghungit/ngx-validator/compare/v2.1.0...v2.2.0) (2023-05-18)
 
 
