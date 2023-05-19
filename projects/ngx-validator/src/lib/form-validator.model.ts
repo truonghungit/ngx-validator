@@ -33,10 +33,10 @@ export const enum UIFramework {
 export type ValidateOnFn = (status: { dirty: boolean; touched: boolean; submited: boolean }) => boolean;
 
 export interface FormValidatorConfig {
-  skipValidate?: boolean;
-  uiFrameWork?: UIFramework | 'default' | 'auto';
-  validationMessages?: ValidationMessages;
-  unknownErrorValidationMessage?: string;
-  validationMessagesComponent?: Type<BaseValidationMessagesComponent>;
-  validateOn?: ValidateOnFn;
+  skipValidate: boolean;
+  uiFrameWork: UIFramework;
+  validationMessages: ValidationMessages;
+  unknownErrorValidationMessage: string;
+  validationMessagesComponent: Type<BaseValidationMessagesComponent>;
+  validateOn: ValidateOnFn;
 }

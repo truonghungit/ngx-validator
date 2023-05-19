@@ -16,9 +16,6 @@ import { MatValidationMessagesComponent } from './components/mat-validation-mess
 export const defaultFormValidationConfig: FormValidatorConfig = {
   skipValidate: false,
   uiFrameWork: UIFramework.Auto,
-  validateOn: ({ dirty, touched, submited }) => {
-    return (dirty && touched) || submited;
-  },
   unknownErrorValidationMessage: '[This field is invalid]',
   validationMessages: {
     required: 'This field is required.',
@@ -30,7 +27,11 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
     pattern: 'Invalid pattern. Please review your input.',
     range: 'Value should be in the range of {{ range }}',
     url: 'URL is invalid.',
-  }
+  },
+  validationMessagesComponent: DefaultValidationMessagesComponent,
+  validateOn: ({ dirty, touched, submited }) => {
+    return (dirty && touched) || submited;
+  },
 }
 
 @NgModule({

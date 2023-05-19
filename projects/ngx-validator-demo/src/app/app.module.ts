@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
 import { BootstrapComponent } from './bootstrap/bootstrap.component';
 import { AngularMaterialComponent } from './angular-material/angular-material.component';
 
-const formValidatorConfig: FormValidatorConfig = {
+const formValidatorConfig: Partial<FormValidatorConfig> = {
   validateOn: (status) => {
     return status.touched || status.submited;
   }
