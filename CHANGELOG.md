@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/truonghungit/ngx-validator/compare/v2.4.0...v2.4.1) (2023-05-19)
+
+
+### Bug Fixes
+
+* :bug: add default validationMessagesComponent ([6c18d8c](https://github.com/truonghungit/ngx-validator/commit/6c18d8c39166212d0e69db140b9597bfa55b8bc6))
+
 # [2.4.0](https://github.com/truonghungit/ngx-validator/compare/v2.3.0...v2.4.0) (2023-05-19)
 
 
