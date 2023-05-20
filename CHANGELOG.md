@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/truonghungit/ngx-validator/compare/v2.4.1...v2.5.0) (2023-05-20)
+
+
+### Features
+
+* :sparkles: add equal and equalTo validator functions ([3bb8f77](https://github.com/truonghungit/ngx-validator/commit/3bb8f776d9528f8e3fce7df5e630d47be04d34a7))
+
 ## [2.4.1](https://github.com/truonghungit/ngx-validator/compare/v2.4.0...v2.4.1) (2023-05-19)
 
 
