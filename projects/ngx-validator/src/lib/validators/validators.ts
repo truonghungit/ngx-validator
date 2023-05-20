@@ -347,3 +347,38 @@ export function url(message?: string): ValidatorFn {
     return URL_REGEXP.test(control.value) ? null : { url: { message } };
   };
 }
+
+export function equal(value: any, message?: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (isEmptyInputValue(control.value) || isEmptyInputValue(value)) {
+      return null; // don't validate empty values to allow optional controls
+    }
+
+    return value === control.value
+      ? null
+      : { equal: { requiredValue: value, actual: control.value, message } };
+  };
+};
+
+export function equalTo(controlNamePath: string, message?: string): ValidatorFn {
+  let subscribe: boolean = false;
+
+  return (control: AbstractControl): ValidationErrors | null => {
+    const equalControl = control.root.get(controlNamePath);
+
+    if (isEmptyInputValue(control.value) || isEmptyInputValue(controlNamePath) || !equalControl) {
+      return null; // don't validate empty values to allow optional controls
+    }
+
+    if (!subscribe) {
+      subscribe = true;
+      equalControl.valueChanges.subscribe(() => {
+        control.updateValueAndValidity();
+      });
+    };
+
+    return equalControl.value === control.value
+      ? null
+      : { equalTo: { requiredValue: equalControl.value, actual: control.value, message } };
+  }
+}

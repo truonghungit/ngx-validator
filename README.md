@@ -6,10 +6,9 @@ Created by Angular developer for Angular developers with ❤️.
 
 ## Table of Contents
 
-- [Why @popeyelab/ngx-validator](#why-@popeyelab/ngx-validator)
+- [Why](#why)
 - [Quick start](#quick-start)
 - [Validators](#validators)
-
   - [Angular built-in validators](#angular-built-in-validators)
     - [min](#min)
     - [max](#max)
@@ -22,11 +21,13 @@ Created by Angular developer for Angular developers with ❤️.
   - [Additional Validators](#additional-validators)
     - [range](#range)
     - [url](#url)
+    - [equal](#equal)
+    - [equalTo](#equal-to)
 
 - [Changelog](#changelog)
 - [License](#license)
 
-## Why @popeyelab/ngx-validator
+## Why
 
 ### Without **@popeyelab/ngx-validator**
 
@@ -244,15 +245,13 @@ const formValidatorConfig: Partial<FormValidatorConfig> = {
   },
 };
 
-
 @NgModule({
   imports: [
     // ...
-    FormValidatorModule.configure(formValidatorConfig)
-  ]
+    FormValidatorModule.configure(formValidatorConfig),
+  ],
 })
-export class AppModule { }
-
+export class AppModule {}
 ```
 
 ## Validators
@@ -488,6 +487,55 @@ import { url } from '@popeyelab/ngx-validator';
 // ...
 const control = new FormControl('example url', url('Invalid URL'));
 console.log(control.errors); // {url: {message: 'Invalid URL'}}
+```
+
+### equal
+
+Validator that requires the control's value equal to the provided value.
+`equal(value: string, message?: string): ValidatorFn`
+
+##### Parameters
+
+| Name    | Type   |
+| ------- | ------ |
+| value   | string |
+| message | string |
+
+##### Usage:
+
+```typescript
+import { equal } from '@popeyelab/ngx-validator';
+
+// ...
+const control = new FormControl('hello', equal('hello world', 'Value should be equal to hello world'));
+```
+
+### equalTo
+
+Validator that requires the control's value equal to the value of provided control.
+`equalTo(controlNamePath: string, message?: string): ValidatorFn`
+
+##### Parameters
+
+| Name            | Type   |
+| --------------- | ------ |
+| controlNamePath | string |
+| message         | string |
+
+##### Usage:
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { equalTo } from '@popeyelab/ngx-validator';
+
+// ...
+
+form = new FormGroup({
+  password: new FormControl(''),
+  confirmPassword: new FormControl('', [equalTo('password', 'Confirm Password does not match')]),
+});
+
 ```
 
 ## Changelog
