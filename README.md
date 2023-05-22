@@ -1,10 +1,12 @@
 # Angular Form Validator
 
 
-![GitHub](https://img.shields.io/github/license/truonghungit/ngx-validator)
+[![GitHub](https://img.shields.io/github/license/truonghungit/ngx-validator)](./LICENSE)
+[![commitizen](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)]()
+[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
 [![release](https://github.com/truonghungit/ngx-validator/actions/workflows/release.yml/badge.svg)](https://github.com/truonghungit/ngx-validator/actions/workflows/release.yml)
-![npm](https://img.shields.io/npm/v/@popeyelab/ngx-validator)
-![npm](https://img.shields.io/npm/dw/@popeyelab/ngx-validator)
+[![npm](https://img.shields.io/npm/v/@popeyelab/ngx-validator)](https://www.npmjs.com/package/@popeyelab/ngx-validator)
+[![npm](https://img.shields.io/npm/dw/@popeyelab/ngx-validator)]()
 
 Get validation messages with zero coding in less than 30 seconds (seriously)
 
@@ -19,16 +21,16 @@ Created by Angular developer for Angular developers with ❤️.
     - [min](#min)
     - [max](#max)
     - [required](#required)
-    - [requiredTrue](#requiredTrue)
+    - [requiredTrue](#requiredtrue)
     - [email](#email)
-    - [minLength](#minLength)
-    - [maxLength](#maxLength)
+    - [minLength](#minlength)
+    - [maxLength](#maxlength)
     - [pattern](#pattern)
   - [Additional Validators](#additional-validators)
     - [range](#range)
     - [url](#url)
     - [equal](#equal)
-    - [equalTo](#equal-to)
+    - [equalTo](#equalto)
 
 - [Changelog](#changelog)
 - [License](#license)
@@ -149,8 +151,14 @@ import { FormValidatorModule } from '@popeyelab/ngx-validator';
 import { AppComponent } from './app.component';
 
 @NgModule({
-  declarations: [AppComponent, BootstrapComponent, AngularMaterialComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, ReactiveFormsModule, FormValidatorModule, AppRoutingModule],
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule, 
+    BrowserAnimationsModule, 
+    ReactiveFormsModule, 
+    FormValidatorModule, 
+    AppRoutingModule
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
@@ -550,4 +558,4 @@ See the [release page](https://github.com/truonghungit/ngx-validator/releases).
 
 ## License
 
-[MIT](./LICENSE)
+This project is released under the [MIT](./LICENSE)
