@@ -1,5 +1,11 @@
 # Angular Form Validator
 
+
+![GitHub](https://img.shields.io/github/license/truonghungit/ngx-validator)
+[![release](https://github.com/truonghungit/ngx-validator/actions/workflows/release.yml/badge.svg)](https://github.com/truonghungit/ngx-validator/actions/workflows/release.yml)
+![npm](https://img.shields.io/npm/v/@popeyelab/ngx-validator)
+![npm](https://img.shields.io/npm/dw/@popeyelab/ngx-validator)
+
 Get validation messages with zero coding in less than 30 seconds (seriously)
 
 Created by Angular developer for Angular developers with ❤️.
