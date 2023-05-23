@@ -1,6 +1,5 @@
 # Angular Form Validator
 
-
 [![GitHub](https://img.shields.io/github/license/truonghungit/ngx-validator)](./LICENSE)
 [![commitizen](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)]()
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
@@ -16,23 +15,9 @@ Created by Angular developer for Angular developers with ❤️.
 
 - [Why](#why)
 - [Demo](https://ngx-validator-showcase.vercel.app/)
-- [Quick start](#quick-start)
+- [Quick Start](#quick-start)
+- [Validation Messages](#validation-messages)
 - [Validators](#validators)
-  - [Angular built-in validators](#angular-built-in-validators)
-    - [min](#min)
-    - [max](#max)
-    - [required](#required)
-    - [requiredTrue](#requiredtrue)
-    - [email](#email)
-    - [minLength](#minlength)
-    - [maxLength](#maxlength)
-    - [pattern](#pattern)
-  - [Additional Validators](#additional-validators)
-    - [range](#range)
-    - [url](#url)
-    - [equal](#equal)
-    - [equalTo](#equalto)
-
 - [Changelog](#changelog)
 - [License](#license)
 
@@ -117,7 +102,9 @@ To declarative validation error messages for reactive forms. Typically you'd do 
 </form>
 ```
 
-## Quick start
+[Back to top](#table-of-contents)
+
+## Quick Start
 
 Follow these steps to get started with **Ngx Validator**.
 
@@ -153,13 +140,7 @@ import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule, 
-    BrowserAnimationsModule, 
-    ReactiveFormsModule, 
-    FormValidatorModule, 
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, BrowserAnimationsModule, ReactiveFormsModule, FormValidatorModule, AppRoutingModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
@@ -221,15 +202,35 @@ _app.component.html_
 
 > As you can see, we don't have to do anymore in html template. The `Ngx Validator` will know how to display the validation messages to the user interface.
 
-## Customizing the Validator configuration
+[Back to top](#table-of-contents)
 
-Default configuration
+## Validation Messages
+
+The library will capture the error (`error: ValidationErrors`) from the from control, then show the validation messages to UI based on the default validation messages as bellow.
+
+| Error         | Message                                               |
+| ------------- | ----------------------------------------------------- |
+| required      | This field is required                                |
+| email         | Email is invalid                                      |
+| max           | Value should be less than or equal to {{ max }}.      |
+| min           | Value should be greater than or equal to {{ min }}.   |
+| maxlength     | {{ requiredLength }} characters are allowed.          |
+| minlength     | Should have at least {{ requiredLength }} characters. |
+| pattern       | Invalid pattern. Please review your input.            |
+| range         | Value should be in the range of {{ range }}           |
+| url           | URL is invalid.                                       |
+| unknown error | [This field is invalid]                               |
+
+### Custom validation Messages
+
+We have the following options for changing the validation message:
+
+#### Option 1: Use form validation configuration
 
 ```typescript
-export const defaultFormValidationConfig: FormValidatorConfig = {
-  skipValidate: false,
-  uiFrameWork: UIFramework.Auto,
-  unknownErrorValidationMessage: '[This field is invalid]',
+import { FormValidatorModule, FormValidatorConfig } from '@popeyelab/ngx-validator';
+
+const formValidatorConfig: Partial<FormValidatorConfig> = {
   validationMessages: {
     required: 'This field is required.',
     email: 'Email is invalid',
@@ -241,23 +242,6 @@ export const defaultFormValidationConfig: FormValidatorConfig = {
     range: 'Value should be in the range of {{ range }}',
     url: 'URL is invalid.',
   },
-  validationMessagesComponent: DefaultValidationMessagesComponent,
-  validateOn: ({ dirty, touched, submited }) => {
-    return (dirty && touched) || submited;
-  },
-};
-```
-
-We can customize the validator configuration by passing a custom config object to `FormValidatorModule.configure` function
-
-Example:
-
-```typescript
-const formValidatorConfig: Partial<FormValidatorConfig> = {
-  uiFrameWork: UIFramework.Bootstrap,
-  validateOn: ({ dirty, touched, submited }) => {
-    return dirty || touched || submited;
-  },
 };
 
 @NgModule({
@@ -268,6 +252,115 @@ const formValidatorConfig: Partial<FormValidatorConfig> = {
 })
 export class AppModule {}
 ```
+
+#### Option 2: Use `validationMessages` input of `FormControlValidatorDirective`
+
+_app.component.html_
+
+```html
+<form [formGroup]="form">
+  <div>
+    <label>Your Name</label>
+    <input type="text" formControlName="name" [validationMessages]="{required: 'Please enter your name'}" />
+  </div>
+
+  <div>
+    <label>Email Address</label>
+    <input type="email" formControlName="email" [validationMessages]="{required: 'Please enter your email', email: 'Please enter valid email'}" />
+  </div>
+</form>
+```
+
+#### Option 3: Pass validation messages to validator function
+
+Default Angular build-in validator functions does not support passing validation messages, so you should use the wrapped validator functions from `@popeyelab/ngx-validator`;
+
+_app.component.ts_
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { required, equalTo, email } from '@popeyelab/ngx-validator';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+})
+export class AppComponent {
+  form = new FormGroup({
+    name: new FormControl('', [required('Please enter your name')]),
+    email: new FormControl('', [required('Please enter your email'), email('Email is invalid')]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    confirmPassword: new FormControl('', [Validators.required, equalTo('password', 'Confirm password does not match')]),
+  });
+}
+```
+
+### Custom Validation Messages for Your Custom Validator
+
+If you have a custom validator, that returns an error like the example bellow
+
+```typescript
+function color(color: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return control.value?.toLowerCase() === color ? null : { wrongColor: { requiredColor: color, actual: control.value } };
+  };
+}
+
+//...
+const control = new FormControl('green', color('blue'));
+```
+
+You can also add the validation message for custom form validator by
+
+#### Option 1: Use form validation configuration
+
+```typescript
+import { FormValidatorConfig } from '@popeyelab/ngx-validator';
+
+const formValidatorConfig: Partial<FormValidatorConfig> = {
+  validationMessages: {
+    // ...
+    wrongColor: 'Invalid color',
+  },
+};
+```
+
+#### Option 2: Use `validationMessages` input of `FormControlValidatorDirective`
+
+_app.component.html_
+
+```html
+<form [formGroup]="form">
+  <div>
+    <label>Your Color</label>
+    <input type="text" formControlName="color" [validationMessages]="{wrongColor: 'Invalid color'}" />
+  </div>
+</form>
+```
+
+#### Option 3: Return error message in your custom validator function
+
+_app.component.html_
+
+```typescript
+function color(color: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return control.value?.toLowerCase() === color
+      ? null
+      : {
+          wrongColor: {
+            requiredColor: color,
+            actual: control.value,
+            message: 'Invalid color'
+          },
+        };
+  };
+}
+```
+
+[Back to top](#table-of-contents)
 
 ## Validators
 
@@ -550,8 +643,9 @@ form = new FormGroup({
   password: new FormControl(''),
   confirmPassword: new FormControl('', [equalTo('password', 'Confirm Password does not match')]),
 });
-
 ```
+
+[Back to top](#table-of-contents)
 
 ## Changelog
 

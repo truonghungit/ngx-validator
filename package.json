@@ -1,6 +1,7 @@
 {
   "name": "@popeyelab/ngx-validator",
   "version": "2.5.3",
+  "description": "A Reactive Form Validator library for Angular.",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
