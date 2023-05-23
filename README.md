@@ -15,6 +15,7 @@ Created by Angular developer for Angular developers with ❤️.
 ## Table of Contents
 
 - [Why](#why)
+- [Demo](https://ngx-validator-showcase.vercel.app/)
 - [Quick start](#quick-start)
 - [Validators](#validators)
   - [Angular built-in validators](#angular-built-in-validators)
