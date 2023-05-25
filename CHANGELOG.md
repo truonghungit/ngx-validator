@@ -1,3 +1,10 @@
+## [2.5.5](https://github.com/truonghungit/ngx-validator/compare/v2.5.4...v2.5.5) (2023-05-25)
+
+
+### Bug Fixes
+
+* :bug: resolve version conflict issue ([29f4021](https://github.com/truonghungit/ngx-validator/commit/29f40210c52ae30a05f3993034c56787d4d598f1))
+
 ## [2.5.4](https://github.com/truonghungit/ngx-validator/compare/v2.5.3...v2.5.4) (2023-05-23)
 
 ## [2.5.3](https://github.com/truonghungit/ngx-validator/compare/v2.5.2...v2.5.3) (2023-05-23)
