@@ -17,6 +17,7 @@ Created by Angular developer for Angular developers with ❤️.
 - [Demo](https://ngx-validator-showcase.vercel.app/)
 - [Quick Start](#quick-start)
 - [Validation Messages](#validation-messages)
+- [When Does Validation Run](#when-does-validation-run)
 - [Validators](#validators)
 - [Changelog](#changelog)
 - [License](#license)
@@ -353,7 +354,7 @@ function color(color: string): ValidatorFn {
           wrongColor: {
             requiredColor: color,
             actual: control.value,
-            message: 'Invalid color'
+            message: 'Invalid color',
           },
         };
   };
@@ -361,6 +362,34 @@ function color(color: string): ValidatorFn {
 ```
 
 [Back to top](#table-of-contents)
+
+## When Does Validation Run
+
+By default, ngx-validator will run validation method when:
+
+#### Form control dirty & touched
+
+> A controls is `dirty` if users have changed the value of the control on UI.
+>
+> A controls is `touched` if users have focused on the control and then focused on something else.
+> For example by clicking into the control and then pressing tab or clicking on another control in the form.
+
+#### OR Whenever users attempt to submit a form.
+
+You can control when ngx-validator runs validation by changing the configuration depending on your needs.
+
+```typescript
+const formValidatorConfig: Partial<FormValidatorConfig> = {
+  validateOn: (status) => {
+    return status.touched || status.submited;
+  },
+};
+
+@NgModule({
+  imports: [FormValidatorModule.configure(formValidatorConfig)],
+})
+export class AppModule {}
+```
 
 ## Validators
 

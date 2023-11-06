@@ -382,3 +382,9 @@ export function equalTo(controlNamePath: string, message?: string): ValidatorFn 
       : { equalTo: { requiredValue: equalControl.value, actual: control.value, message } };
   }
 }
+
+export function noWhitespace(message?: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return (control.value || '').trim().length ? null : { whitespace: { message } };
+  };
+}
