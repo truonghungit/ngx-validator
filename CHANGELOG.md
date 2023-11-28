@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/truonghungit/ngx-validator/compare/v2.5.5...v2.6.0) (2023-11-28)
+
+
+### Features
+
+* **validator:** add new noWhitespace validator function ([ccf9840](https://github.com/truonghungit/ngx-validator/commit/ccf984021d244f1f61f2f72b83ca5d4a1459232f))
+
 ## [2.5.5](https://github.com/truonghungit/ngx-validator/compare/v2.5.4...v2.5.5) (2023-05-25)
 
 
