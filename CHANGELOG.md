@@ -1,3 +1,5 @@
+## [2.6.1](https://github.com/truonghungit/ngx-validator/compare/v2.6.0...v2.6.1) (2023-11-28)
+
 # [2.6.0](https://github.com/truonghungit/ngx-validator/compare/v2.5.5...v2.6.0) (2023-11-28)
 
 
