@@ -674,6 +674,31 @@ form = new FormGroup({
 });
 ```
 
+
+### noWhitespace
+
+The validator requires that the value of the control not be empty or contain only spaces
+`noWhitespace(message?: string): ValidatorFn`
+
+##### Parameters
+
+| Name            | Type   |
+| --------------- | ------ |
+| message         | string |
+
+##### Usage:
+
+```typescript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { noWhitespace } from '@popeyelab/ngx-validator';
+
+// ...
+
+const control = new FormControl('  ', noWhitespace('This field is required'));
+console.log(control.errors); // {required: {message: 'This field is required'}}
+```
+
 [Back to top](#table-of-contents)
 
 ## Changelog
