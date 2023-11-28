@@ -13,17 +13,16 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
-          
+          cache: 'yarn'
+
       - name: Install dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: yarn lint
 
       - name: Build library
-        run: npm run build:library
+        run: yarn run build:library
 
       - name: Release
         uses: cycjimmy/semantic-release-action@v3
